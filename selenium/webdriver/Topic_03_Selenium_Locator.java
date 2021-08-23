@@ -3,12 +3,11 @@ package webdriver;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.server.handler.SendKeys;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -16,13 +15,13 @@ import org.testng.annotations.Test;
 public class Topic_03_Selenium_Locator {
 	// Khai bao 1 bien dai dien cho Selenium WebDriver
 	WebDriver driver;
-	
+	String Path = System.getProperty("user.dir");	
 	
 	
 	@BeforeClass
 	public void beforeClass() {
-		// Mo trinh duyet Firefox
-		driver = new  FirefoxDriver();
+		System.setProperty("webdriver.gecko.driver", Path + "\\browserDrivers\\geckodriver.exe");
+		driver = new FirefoxDriver();
 		
 		// Set timeout de tim element
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
