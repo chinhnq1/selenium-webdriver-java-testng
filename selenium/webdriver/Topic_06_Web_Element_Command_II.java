@@ -102,10 +102,10 @@ public class Topic_06_Web_Element_Command_II {
 		} else {
 			System.out.println(by + " is not display");
 			return false;
-			
+
 		}
 	}
-	
+
 	public boolean isElementSelected(By by) {
 		WebElement element = driver.findElement(by);
 		if (element.isSelected()) {
@@ -114,10 +114,10 @@ public class Topic_06_Web_Element_Command_II {
 		} else {
 			System.out.println(by + " is not selected");
 			return false;
-			
+
 		}
 	}
-	
+
 	public boolean isElementEnable(By by) {
 		WebElement element = driver.findElement(by);
 		if (element.isEnabled()) {
@@ -150,32 +150,33 @@ public class Topic_06_Web_Element_Command_II {
 		Assert.assertTrue(isElementEnable(over18RadioBy));
 		Assert.assertTrue(isElementEnable(educationTextArea));
 		Assert.assertTrue(isElementEnable(job01DropdownBy));
-		
+
 		Assert.assertFalse(isElementEnable(slider02By));
 
-
-		
-		
 	}
+
 	@Test
 	public void TC_04_isSelected() {
 		driver.get("https://automationfc.github.io/basic-form/index.html");
 		clickToElement(over18RadioBy);
 		clickToElement(developementCheckBox);
-		
+
 		Assert.assertTrue(isElementSelected(over18RadioBy));
 		Assert.assertTrue(isElementSelected(developementCheckBox));
 		Assert.assertFalse(isElementSelected(javaCheckBox));
-		
+
 		clickToElement(over18RadioBy);
 		clickToElement(developementCheckBox);
 
 		Assert.assertTrue(isElementSelected(over18RadioBy));
 		Assert.assertFalse(isElementSelected(developementCheckBox));
-		
-		
+
 	}
 
+
+	
+	
+	
 	@AfterClass
 	public void afterClass() {
 		driver.quit();
