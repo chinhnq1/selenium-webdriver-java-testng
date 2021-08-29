@@ -91,7 +91,7 @@ public class Topic_08_Custom_DropDown {
 
 	@AfterClass
 	public void afterClass() {
-		// driver.quit();
+		 driver.quit();
 	}
 
 	public void selectItemDropDown(By parentBy, By childBy, String expectedTextItem) {
@@ -101,7 +101,7 @@ public class Topic_08_Custom_DropDown {
 		List<WebElement> allItems = driver.findElements(childBy);
 
 		for (WebElement item : allItems) {
-			if (item.getText().equals(expectedTextItem)) {
+			if (item.getText().trim().equals(expectedTextItem)) {
 				if (item.isDisplayed()) {
 					item.click();
 				} else {
