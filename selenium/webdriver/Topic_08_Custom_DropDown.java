@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -26,7 +27,10 @@ public class Topic_08_Custom_DropDown {
 	@BeforeClass
 	public void beforeClass() {
 		System.setProperty("webdriver.gecko.driver", Path + "\\browserDrivers\\geckodriver.exe");
+		//System.setProperty("webdriver.chrome.driver", Path + "\\browserDrivers\\chromedriver.exe");
+		
 		driver = new FirefoxDriver();
+		//driver = new ChromeDriver();
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		explicitWait = new WebDriverWait(driver, 15);
 		jsExecutor = (JavascriptExecutor) driver;
@@ -108,17 +112,20 @@ public class Topic_08_Custom_DropDown {
 				"Rua do Mercado, 12");
 	}
 
-	@Test
-	public void TC_05_Angular() {
+	//@Test
+	public void TC_05_Angular() { 
 		driver.get(
 				"https://ej2.syncfusion.com/angular/demos/?_ga=2.262049992.437420821.1575083417-524628264.1575083417#/material/drop-down-list/data-binding");
 
 		selectItemDropDown(By.cssSelector("span[aria-owns='games_options']"), By.xpath("//ul[@id ='games_options']/li"),
 				"Cricket");
 		sleep(3);
+		
+		selectItemDropDown(By.cssSelector("span[aria-owns='games_options']"), By.xpath("//ul[@id ='games_options']/li"),
+				"Football");
+		sleep(3);
 		Assert.assertEquals(
-				driver.findElement(By.xpath("//span[@aria-owns='games_options']//option")).getText(),
-				"Cricket");
+				driver.findElement(By.xpath("//span[@aria-owns='games_options']//input[@role='textbox']")).getAttribute("aria-label"),"Football"); // use only for chrome
 
 	}
 
