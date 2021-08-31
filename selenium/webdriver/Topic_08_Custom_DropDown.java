@@ -32,7 +32,7 @@ public class Topic_08_Custom_DropDown {
 		jsExecutor = (JavascriptExecutor) driver;
 	}
 
-	//@Test
+	// @Test
 	public void TC_01_JQuery() {
 		driver.get("http://jqueryui.com/resources/demos/selectmenu/default.html");
 		By parentBy = By.id("number-button");
@@ -56,7 +56,7 @@ public class Topic_08_Custom_DropDown {
 				By.xpath("//span[@id='number-button']/span[@class='ui-selectmenu-text' and text()='15']")));
 	}
 
-	//@Test
+	// @Test
 	public void TC_02_React() {
 		driver.get("https://react.semantic-ui.com/maximize/dropdown-example-selection/");
 		By parentBy = By.xpath("//i[@class ='dropdown icon']");
@@ -64,20 +64,17 @@ public class Topic_08_Custom_DropDown {
 
 		selectItemDropDown(parentBy, childBy, "Jenny Hess");
 
-		Assert.assertTrue(isElementDisplayed(
-				By.xpath("//div[@role='alert' and text() = 'Jenny Hess']")));
+		Assert.assertTrue(isElementDisplayed(By.xpath("//div[@role='alert' and text() = 'Jenny Hess']")));
 
 		selectItemDropDown(parentBy, childBy, "Elliot Fu");
-		Assert.assertTrue(isElementDisplayed(
-				By.xpath("//div[@role='alert' and text() = 'Elliot Fu']")));
+		Assert.assertTrue(isElementDisplayed(By.xpath("//div[@role='alert' and text() = 'Elliot Fu']")));
 
 		selectItemDropDown(parentBy, childBy, "Matt");
-		Assert.assertTrue(isElementDisplayed(
-				By.xpath("//div[@role='alert' and text() = 'Matt']")));
+		Assert.assertTrue(isElementDisplayed(By.xpath("//div[@role='alert' and text() = 'Matt']")));
 
 	}
 
-	@Test
+	// @Test
 	public void TC_03_VueJS() {
 		driver.get("https://mikerodham.github.io/vue-dropdowns/");
 		By parentBy = By.xpath("//li[@class ='dropdown-toggle']");
@@ -85,20 +82,92 @@ public class Topic_08_Custom_DropDown {
 
 		selectItemDropDown(parentBy, childBy, "Second Option");
 
-		Assert.assertTrue(isElementDisplayed(
-				By.xpath("//li[@class ='dropdown-toggle' and contains(text(),'Second Option')]")));
+		Assert.assertTrue(
+				isElementDisplayed(By.xpath("//li[@class ='dropdown-toggle' and contains(text(),'Second Option')]")));
+	}
+
+	// @Test
+	public void TC_04_Kendo() {
+		driver.get("https://demos.telerik.com/kendo-ui/dropdownlist/index");
+		// wait for loading demo invisible
+
+		explicitWait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("span.kd-loader")));
+
+		explicitWait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("span.k-i-loading")));
+
+		selectItemDropDown(By.xpath("//span[@aria-owns='categories_listbox']"),
+				By.cssSelector("ul#categories_listbox h3"), "Seafood");
+
+		explicitWait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("span.k-i-loading")));
+
+		selectItemDropDown(By.xpath("//span[@aria-owns='products_listbox']"), By.cssSelector("ul#products_listbox li"),
+				"Gravad lax");
+		explicitWait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("span.k-i-loading")));
+
+		selectItemDropDown(By.xpath("//span[@aria-owns='shipTo_listbox']"), By.cssSelector("ul#shipTo_listbox li"),
+				"Rua do Mercado, 12");
+	}
+
+	@Test
+	public void TC_05_Angular() {
+		driver.get(
+				"https://ej2.syncfusion.com/angular/demos/?_ga=2.262049992.437420821.1575083417-524628264.1575083417#/material/drop-down-list/data-binding");
+
+		selectItemDropDown(By.cssSelector("span[aria-owns='games_options']"), By.xpath("//ul[@id ='games_options']/li"),
+				"Cricket");
+		sleep(3);
+		Assert.assertEquals(
+				driver.findElement(By.xpath("//span[@aria-owns='games_options']//option")).getText(),
+				"Cricket");
+
+	}
+
+	// @Test
+	public void TC_06_Editable() {
+		driver.get("http://indrimuska.github.io/jquery-editable-select/");
+		selectItemEditableDropDown(By.xpath("//div[@id='default-place']/input"),
+				By.xpath("//ul[@class='es-list' and @style]/li"), "Audi");
+		sleep(1);
+		selectItemEditableDropDown(By.xpath("//div[@id='default-place']/input"),
+				By.xpath("//ul[@class='es-list' and @style]/li"), "BMW");
+
 	}
 
 	@AfterClass
 	public void afterClass() {
-		 driver.quit();
+		driver.quit();
 	}
 
 	public void selectItemDropDown(By parentBy, By childBy, String expectedTextItem) {
-		driver.findElement(parentBy).click();
-		explicitWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(childBy));
 
-		List<WebElement> allItems = driver.findElements(childBy);
+		// Cho check xem element duoc phep kich hay chua
+
+		explicitWait.until(ExpectedConditions.elementToBeClickable(parentBy));
+		driver.findElement(parentBy).click(); // ham element clickable tra ve 1
+
+		List<WebElement> allItems = explicitWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(childBy)); // ham
+
+		for (WebElement item : allItems) {
+			if (item.getText().trim().equals(expectedTextItem)) {
+				if (item.isDisplayed()) {
+					item.click();
+				} else {
+					jsExecutor.executeScript("arguments[0].scrollIntoView(true);", item);
+					item.click();
+				}
+				break;
+			}
+		}
+	}
+
+	public void selectItemEditableDropDown(By parentBy, By childBy, String expectedTextItem) {
+
+		// Cho check xem element duoc phep kich hay chua
+		driver.findElement(parentBy).clear();
+
+		driver.findElement(parentBy).sendKeys(expectedTextItem);
+
+		List<WebElement> allItems = explicitWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(childBy)); // ham
 
 		for (WebElement item : allItems) {
 			if (item.getText().trim().equals(expectedTextItem)) {
@@ -122,5 +191,14 @@ public class Topic_08_Custom_DropDown {
 			return false;
 
 		}
+	}
+
+	public void sleep(long seconds) {
+
+		try {
+			Thread.sleep(seconds * 1000);
+		} catch (InterruptedException ie) {
+		}
+
 	}
 }
