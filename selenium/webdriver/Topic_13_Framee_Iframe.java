@@ -26,7 +26,7 @@ public class Topic_13_Framee_Iframe {
 		jsExecutor = (JavascriptExecutor) driver;
 	}
 
-	//@Test
+	@Test
 	public void TC_01_Iframe() {
 		driver.get("https://kyna.vn/");
 		sleepInSecond(5);
@@ -69,7 +69,7 @@ public class Topic_13_Framee_Iframe {
 
 	@AfterClass
 	public void afterClass() {
-		//driver.quit();
+		driver.quit();
 	}
 
 	public void scrollBottomPage() {
